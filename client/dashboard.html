@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fenwick Tree - Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+
+    <div class="container dashboard-container">
+        <button id="logoutBtn" class="logout-btn">Logout</button>
+        <h2>Fenwick Tree Dashboard</h2>
+        
+        <p>Welcome! Here you can update values and get prefix sums from the Fenwick Tree.</p>
+
+        <!-- Update Section -->
+        <div class="section">
+            <h3>Update Value</h3>
+            <div class="form-group">
+                <label>Index (1-100):</label>
+                <input type="number" id="updateIndex" min="1" max="100" placeholder="e.g. 5">
+            </div>
+            <div class="form-group">
+                <label>Value to Add:</label>
+                <input type="number" id="updateValue" placeholder="e.g. 10">
+            </div>
+            <button id="updateBtn" class="action-btn">Update</button>
+        </div>
+
+        <!-- Prefix Sum Section -->
+        <div class="section">
+            <h3>Get Prefix Sum</h3>
+            <div class="form-group">
+                <label>Index (1-100):</label>
+                <input type="number" id="prefixIndex" min="1" max="100" placeholder="e.g. 10">
+            </div>
+            <button id="getSumBtn" class="action-btn">Get Sum</button>
+            <p>Result: <span id="resultDisplay">---</span></p>
+        </div>
+
+        <div id="dashboardMsg" class="message"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
