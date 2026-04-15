@@ -16,7 +16,7 @@ app.use(cors());
 connectDB();
 
 // Basic Test Route (Verification)
-app.get('/test', (req, res) => {
+app.get('/', (req, res) => {
     res.status(200).send('API Working');
 });
 

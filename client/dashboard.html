@@ -5,39 +5,143 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-
-    <div class="container dashboard-container">
-        <button id="logoutBtn" class="logout-btn">Logout</button>
-        <h2>Fenwick Tree Dashboard</h2>
+    <header class="app-header">
+        <h1 class="app-logo">Fenwick Tree Tool</h1>
         
-        <p>Welcome! Here you can update values and get prefix sums from the Fenwick Tree.</p>
-
-        <!-- Update Section -->
-        <div class="section">
-            <h3>Update Value</h3>
-            <div class="form-group">
-                <label>Index (1-100):</label>
-                <input type="number" id="updateIndex" min="1" max="100" placeholder="e.g. 5">
+        <div class="header-right">
+            <div class="user-profile" id="userProfileToggle">
+                <div class="profile-circle">U</div>
+                <span id="displayUsername" class="user-name">User</span>
+                <span class="dropdown-icon">▼</span>
             </div>
-            <div class="form-group">
-                <label>Value to Add:</label>
-                <input type="number" id="updateValue" placeholder="e.g. 10">
+            
+            <div class="profile-dropdown" id="profileDropdown" style="display: none;">
+                <a href="#" class="dropdown-item">My Profile</a>
+                <a href="#" id="dropdownLogoutBtn" class="dropdown-item text-danger">Logout</a>
             </div>
-            <button id="updateBtn" class="action-btn">Update</button>
         </div>
+    </header>
 
-        <!-- Prefix Sum Section -->
-        <div class="section">
-            <h3>Get Prefix Sum</h3>
-            <div class="form-group">
-                <label>Index (1-100):</label>
-                <input type="number" id="prefixIndex" min="1" max="100" placeholder="e.g. 10">
+    <div class="app-layout">
+        <aside class="sidebar">
+            <h2 class="sidebar-title">Menu</h2>
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard" class="menu-link" data-page="dashboard"><span class="icon">🏠</span> Dashboard</a></li>
+                <li><a href="#update" class="menu-link" data-page="update"><span class="icon">✏️</span> Update Value</a></li>
+                <li><a href="#prefix" class="menu-link" data-page="prefix"><span class="icon">🔢</span> Prefix Sum</a></li>
+                <li><a href="#array" class="menu-link" data-page="array"><span class="icon">📊</span> View Array</a></li>
+                <li><a href="#db" class="menu-link" data-page="db"><span class="icon">🗄️</span> DB Aggregation</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="page-dashboard" class="page-view">
+                <h2>Welcome to Fenwick Tree!</h2>
+                <div class="card color-card-blue">
+                    <p>A Fenwick tree or binary indexed tree is a data structure that can efficiently update elements and calculate prefix sums in a table of numbers.</p>
+                    <p>Use the menu on the left to navigate through the dashboard features.</p>
+                </div>
             </div>
-            <button id="getSumBtn" class="action-btn">Get Sum</button>
-            <p>Result: <span id="resultDisplay">---</span></p>
-        </div>
 
-        <div id="dashboardMsg" class="message"></div>
+            <!-- Update Page -->
+            <div id="page-update" class="page-view" style="display: none;">
+                <h2 class="section-title"><span class="icon">✏️</span> Update Value</h2>
+                <div class="wide-section">
+                    <div class="form-row">
+                        <div class="form-group-wide">
+                            <label>Index (1-100):</label>
+                            <input type="number" id="updateIndex" min="1" max="100" placeholder="e.g. 5">
+                        </div>
+                        <div class="form-group-wide">
+                            <label>Value to Add:</label>
+                            <input type="number" id="updateValue" placeholder="e.g. 10">
+                        </div>
+                    </div>
+                    <button id="updateBtn" class="action-btn wide-btn">Submit Update</button>
+                    <div id="updateMsg" class="message"></div>
+                </div>
+            </div>
+
+            <!-- Prefix Sum Page -->
+            <div id="page-prefix" class="page-view" style="display: none;">
+                <h2 class="section-title"><span class="icon">🔢</span> Prefix Sum</h2>
+                <div class="wide-section">
+                    <div class="form-row">
+                        <div class="form-group-wide">
+                            <label>Index (1-100):</label>
+                            <input type="number" id="prefixIndex" min="1" max="100" placeholder="e.g. 10">
+                        </div>
+                    </div>
+                    <button id="getSumBtn" class="action-btn wide-btn">Calculate Sum</button>
+                    <div id="prefixMsg" class="message"></div>
+                    <p class="result-text">Result: <span id="resultDisplay">---</span></p>
+                </div>
+            </div>
+
+            <!-- View Array Page -->
+            <div id="page-array" class="page-view" style="display: none;">
+                <h2>Current Array Values</h2>
+                <div class="card color-card-cyan">
+                    <button id="fetchArrayBtn" class="action-btn" style="margin-bottom: 15px;">Refresh Data</button>
+                    <table class="simple-table">
+                        <thead>
+                            <tr>
+                                <th>Index</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="arrayTableBody">
+                            <tr><td colspan="2">No data yet. Click refresh!</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- DB Aggregation Page -->
+            <div id="page-db" class="page-view" style="display: none;">
+                <h2 class="section-title"><span class="icon">🗄️</span> DB Aggregation Status</h2>
+                <div class="wide-section">
+                    <div class="form-row">
+                        <div class="form-group-wide">
+                            <label>Index (1-100):</label>
+                            <input type="number" id="dbIndex" min="1" max="100" placeholder="e.g. 10">
+                        </div>
+                    </div>
+                    <button id="getDbSumBtn" class="action-btn wide-btn">Run Mongo DB Aggregation</button>
+                    <div id="dbMsg" class="message"></div>
+                    
+                    <div id="dbResultContainer" style="display:none; margin-top: 30px;">
+                        <table class="simple-table">
+                            <thead>
+                                <tr>
+                                    <th>Source</th>
+                                    <th>Sum Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Fenwick Memory Sum</td>
+                                    <td id="resFenwickSum" style="font-weight: bold; color: #007bff;">---</td>
+                                </tr>
+                                <tr>
+                                    <td>DB MongoDB  Aggregation</td>
+                                    <td id="resDbSum" style="font-weight: bold; color: #28a745;">---</td>
+                                </tr>
+                                <tr style="background-color: #fff3cd;">
+                                    <td>Variance / Difference</td>
+                                    <td id="resDiff" style="font-weight: bold; color: red;">---</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <footer class="app-footer">
+                <p>&copy; 2026 Fenwick Data Structures. All rights reserved.</p>
+            </footer>
+        </main>
     </div>
 
     <script src="app.js"></script>
